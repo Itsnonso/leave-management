@@ -10,6 +10,8 @@ namespace leave_management.Contracts
         ICollection<T> FindAll();
 
         T FindById(int id);
+        public bool isExists(int id);
+       
         bool Create(T entity);
         bool Update(T entity);
         bool Delete(T entity);
