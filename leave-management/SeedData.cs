@@ -19,7 +19,7 @@ namespace leave_management
             {
                 var user = new IdentityUser
                 {
-                    UserName = "admin",
+                    UserName = "admin@localhost.com",
                     Email = "admin@localhost.com"
 
                 };
