@@ -34,7 +34,7 @@ namespace leave_management
 
             //Add Service for AutoMapper
             services.AddAutoMapper(typeof(Maps));
-            services.AddDefaultIdentity<IdentityUser>()
+            services.AddDefaultIdentity<Employee>()
                 .AddRoles<IdentityRole>()
                 .AddEntityFrameworkStores<ApplicationDbContext>();
             services.AddControllersWithViews();
@@ -46,7 +46,7 @@ namespace leave_management
             (
                 IApplicationBuilder app, 
                 IWebHostEnvironment env,
-                UserManager<IdentityUser> usermanager,
+                UserManager<Employee> usermanager,
                 RoleManager<IdentityRole> rolemanager
             )
         {
