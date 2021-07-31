@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace leave_management.Models
 {
-    public class LeaveHistoryVM
+    public class LeaveRequestsVM
     {
         public int ID { get; set; }
 
