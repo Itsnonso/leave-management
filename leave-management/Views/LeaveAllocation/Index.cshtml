@@ -2,7 +2,7 @@
 
 @{
     ViewData["Title"] = "Index";
-    Layout = "~/Views/Shared/_Layout.cshtml";
+    //Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
 <h1>Index</h1>
@@ -28,7 +28,7 @@
             <td>
                 @*@Html.ActionLink("Allocate to Employees","SetLeave",new {id= item.ID }) |*@ 
                 <a class="btn btn-outline-success" asp-action="SetLeave" asp-route-id="@item.ID">
-                    <i class="fa fa-pencil"></i>
+                    <i class="fas fa-user-edit"></i>
                         Allocate to Employees
                 </a>
             </td>

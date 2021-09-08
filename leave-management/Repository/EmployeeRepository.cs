@@ -1,5 +1,6 @@
 ﻿using leave_management.Contracts;
 using leave_management.Data;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -15,51 +16,51 @@ namespace leave_management.Repository
         {
             _db = db;
         }
-        public bool Create(Employee entity)
+        public async Task<bool> Create(Employee entity)
         {
-            _db.Employees.Add(entity);
+           await _db.Employees.AddAsync(entity);
             
-            return Save();
+            return await Save();
         }
 
-        public bool Delete(Employee entity)
+        public async Task<bool> Delete(Employee entity)
         {
             _db.Employees.Remove(entity);
 
-            return Save();
+            return await Save();
         }
 
-        public ICollection<Employee> FindAll()
+        public async Task< ICollection<Employee>> FindAll()
         {
-            var AllEmployees = _db.Employees.ToList();
+            var AllEmployees = await _db.Employees.ToListAsync();
 
             return AllEmployees;
         }
 
-        public Employee FindById(int id)
+        public async Task<Employee> FindById(int id)
         {
-            var employee = _db.Employees.Find(id);
+            var employee = await _db.Employees.FindAsync(id);
 
             return employee;
         }
 
-        public bool isExists(int id)
+        public async Task<bool> isExists(int id)
         {
-            throw new NotImplementedException();
+           throw new NotImplementedException();
         }
 
-        public bool Save()
+        public async Task<bool> Save()
         {
-            var changes = _db.SaveChanges();
+            var changes = await _db.SaveChangesAsync();
 
             return changes > 0;
         }
 
-        public bool Update(Employee entity)
+        public async Task<bool> Update(Employee entity)
         {
             _db.Employees.Update(entity);
 
-            return Save();
+            return await Save();
         }
     }
 }
