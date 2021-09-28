@@ -2,6 +2,8 @@ using leave_management.Contracts;
 using leave_management.Data;
 using leave_management.Mappings;
 using leave_management.Repository;
+using leave_management.Services;
+using leave_management.Utilities;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Identity;
@@ -35,6 +37,16 @@ namespace leave_management
             services.AddScoped<ILeaveRequestRepository, LeaveRequestRepository>();
             services.AddScoped<ILeaveAllocationRepository, LeaveAllocationRepository>();
             services.AddScoped<IEmployeeRepository, EmployeeRepository>();
+            services.AddScoped<IErrorLogger, ErrorLogger>();
+
+            //------------------EMAIL AND CLOUDINARY SERVICE--------------------------------------------------
+
+            var emailConfig = Configuration.GetSection("EmailConfiguration").Get<EmailConfiguration>();
+            services.AddSingleton(emailConfig);
+
+            services.AddTransient<IEmailRepository, EmailRepository>();
+
+            //-------------------------------------------------------------------------------------------------
 
             // Add service for GenericRepository
             services.AddTransient<IUnitofWork, UnitofWork>();

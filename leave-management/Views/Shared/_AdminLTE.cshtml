@@ -70,24 +70,24 @@ scratch. This page gets rid of all links and provides the needed markup only.
             <!-- Right navbar links -->
             @*<ul class="navbar-nav ml-auto">*@
             <!-- Navbar Search -->
-                @*<li class="nav-item">*@
-                    @*<div class="navbar-search-block">
-            <form class="form-inline">
-                <div class="input-group input-group-sm">Yes
-                    <input class="form-control form-control-navbar" type="search" placeholder="Search" aria-label="Search">
-                    <div class="input-group-append">
-                        <button class="btn btn-navbar" type="submit">
-                            <i class="fas fa-search"></i>
-                        </button>
-                        <button class="btn btn-navbar" type="button" data-widget="navbar-search">
-                            <i class="fas fa-times"></i>
-                        </button>
-                    </div>
-                </div>
-            </form>
-        </div>*@
-                @*</li>*@
-        
+            @*<li class="nav-item">*@
+            @*<div class="navbar-search-block">
+                    <form class="form-inline">
+                        <div class="input-group input-group-sm">Yes
+                            <input class="form-control form-control-navbar" type="search" placeholder="Search" aria-label="Search">
+                            <div class="input-group-append">
+                                <button class="btn btn-navbar" type="submit">
+                                    <i class="fas fa-search"></i>
+                                </button>
+                                <button class="btn btn-navbar" type="button" data-widget="navbar-search">
+                                    <i class="fas fa-times"></i>
+                                </button>
+                            </div>
+                        </div>
+                    </form>
+                </div>*@
+            @*</li>*@
+
             <!-- Messages Dropdown Menu -->
             <!--<li class="nav-item dropdown">
                 <a class="nav-link" data-toggle="dropdown" href="#">
@@ -201,15 +201,15 @@ scratch. This page gets rid of all links and provides the needed markup only.
 
                 <!-- SidebarSearch Form -->
                 @*<div class="form-inline">
-                    <div class="input-group" data-widget="sidebar-search">
-                        <input class="form-control form-control-sidebar" type="search" placeholder="Search" aria-label="Search">
-                        <div class="input-group-append">
-                            <button class="btn btn-sidebar">
-                                <i class="fas fa-search fa-fw"></i>
-                            </button>
+                        <div class="input-group" data-widget="sidebar-search">
+                            <input class="form-control form-control-sidebar" type="search" placeholder="Search" aria-label="Search">
+                            <div class="input-group-append">
+                                <button class="btn btn-sidebar">
+                                    <i class="fas fa-search fa-fw"></i>
+                                </button>
+                            </div>
                         </div>
-                    </div>
-                </div>*@
+                    </div>*@
 
                 <!-- Sidebar Menu -->
                 <nav class="mt-2">
@@ -309,38 +309,38 @@ scratch. This page gets rid of all links and provides the needed markup only.
             </div>
 
         </div>
-                <!-- /.content-wrapper -->
-                <!-- Control Sidebar -->
-                <aside class="control-sidebar control-sidebar-dark">
-                    <!-- Control sidebar content goes here -->
-                    <div class="p-3">
-                        <h5>Title</h5>
-                        <p>Sidebar content</p>
-                    </div>
-                </aside>
-                <!-- /.control-sidebar -->
-                <!-- Main Footer -->
-                <footer class="main-footer">
-                    <!-- To the right -->
-                    @*<div class="float-right d-none d-sm-inline">
+        <!-- /.content-wrapper -->
+        <!-- Control Sidebar -->
+        <aside class="control-sidebar control-sidebar-dark">
+            <!-- Control sidebar content goes here -->
+            <div class="p-3">
+                <h5>Title</h5>
+                <p>Sidebar content</p>
+            </div>
+        </aside>
+        <!-- /.control-sidebar -->
+        <!-- Main Footer -->
+        <footer class="main-footer">
+            <!-- To the right -->
+            @*<div class="float-right d-none d-sm-inline">
                     Anything you want
                 </div>*@
-                    <!-- Default to the left -->
-                    <strong>  &copy; @DateTime.Now.Year - Softworks Nigeria- <a asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>.</strong> All rights reserved.
-                </footer>
-            </div>
-            <!-- ./wrapper -->
-            <!-- REQUIRED SCRIPTS -->
-            <!-- jQuery -->
-            <script src="~/lib/jquery/dist/jquery.min.js"></script>
-            <script src="~/js/bootstrap.bundle.min.js"></script>
-            <!-- AdminLTE App -->
-            <script src="~/js/adminlte.min.js"></script>
-            <script src="~/js/jquery.dataTables.min.js"></script>
-            <script src="~/js/dataTables.bootstrap4.min.js"></script>
-            <script src="~/js/site.js" asp-append-version="true"></script>
-            <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+            <!-- Default to the left -->
+            <strong>  &copy; @DateTime.Now.Year - Softworks Nigeria- <a asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>.</strong> All rights reserved.
+        </footer>
+    </div>
+    <!-- ./wrapper -->
+    <!-- REQUIRED SCRIPTS -->
+    <!-- jQuery -->
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script src="~/js/bootstrap.bundle.min.js"></script>
+    <!-- AdminLTE App -->
+    <script src="~/js/adminlte.min.js"></script>
+    <script src="~/js/jquery.dataTables.min.js"></script>
+    <script src="~/js/dataTables.bootstrap4.min.js"></script>
+    <script src="~/js/site.js" asp-append-version="true"></script>
+    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
 
-            @RenderSection("Scripts", required: false)
+    @RenderSection("Scripts", required: false)
 </body>
 </html>

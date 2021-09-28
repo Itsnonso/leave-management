@@ -26,4 +26,14 @@ namespace leave_management.Models
         [Display(Name = "Date Joined")]
         public DateTime DateJoined { get; set; }
     }
+
+    public class AdminDashBooardViewVM
+    {
+        [Display(Name = "Pending Requests")]
+        public int PendingRequests { get; set; }
+
+        [Display(Name = "New User Registration")]
+        public int NewUserRegistration { get; set; }
+        public int RequestsbyDepartment { get; set; }
+    }
 }

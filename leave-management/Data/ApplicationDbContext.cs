@@ -18,5 +18,7 @@ namespace leave_management.Data
         public DbSet<LeaveAllocation> LeaveAllocations { get; set; }
         public DbSet<LeaveRequest> LeaveRequests { get; set; }
         public DbSet<LeaveType> LeaveTypes { get; set; }
+        public DbSet<ErrorLog> ErrorLogs { get; set; }
+        public DbSet<Department> Departments { get; set; }
     }
 }

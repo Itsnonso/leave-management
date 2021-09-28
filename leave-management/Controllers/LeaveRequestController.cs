@@ -2,6 +2,7 @@
 using leave_management.Contracts;
 using leave_management.Data;
 using leave_management.Models;
+using leave_management.Utilities;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
@@ -22,7 +23,9 @@ namespace leave_management.Controllers
         private readonly ILeaveTypeRepository _leaveTyperepo;
         private readonly ILeaveAllocationRepository _leaveAllocrepo;
         private readonly IMapper _mapper;
+        private readonly IErrorLogger _errorlogger;
         private readonly UserManager<Employee> _userManager;
+        private readonly ApplicationDbContext _db;
 
         public LeaveRequestController
             (
@@ -30,7 +33,9 @@ namespace leave_management.Controllers
             IMapper mapper, 
             UserManager<Employee> userManager,
            ILeaveTypeRepository leaveTyperepo, 
-           ILeaveAllocationRepository leaveAllocrepo
+           ILeaveAllocationRepository leaveAllocrepo,
+           IErrorLogger errorlogger,
+            ApplicationDbContext db
             )
         {
             _leaveRequestrepo = leaveaRequestrepo;
@@ -38,10 +43,12 @@ namespace leave_management.Controllers
             _userManager = userManager;
             _leaveTyperepo = leaveTyperepo;
             _leaveAllocrepo = leaveAllocrepo;
+            _errorlogger = errorlogger;
+            _db = db;
         }
         [Authorize(Roles = "Administrator")]
         // GET: LeaveRequestController
-        public async Task< ActionResult> Index()
+        public async Task<ActionResult> Index()
         {
             var leaverequests = await _leaveRequestrepo.FindAll();
             var leaverequestModel = _mapper.Map<List<LeaveRequestVM>>(leaverequests);
@@ -206,6 +213,11 @@ namespace leave_management.Controllers
                
                 var employee = await _userManager.GetUserAsync(User);
                 var allocation = await _leaveAllocrepo.GetLeaveAllocationbyEmployeeandType(employee.Id, model.LeaveTypeId);
+                if (allocation == null)
+                {
+                    ModelState.AddModelError("", "This employee has no assigned Leave Allocations");
+                    return View(model);
+                }
                 int daysRequested = (int)(endDate - startDate).TotalDays;
 
                 if (daysRequested > allocation.NumberofDays)
@@ -238,8 +250,12 @@ namespace leave_management.Controllers
 
                 return RedirectToAction("MyLeave");
             }
-            catch (Exception)
+            catch (Exception ex)
             {
+                ErrorLogger err = new ErrorLogger();
+                var logError = err.logError(ex);
+                await _db.ErrorLogs.AddAsync(logError);
+                await _db.SaveChangesAsync();
                 ModelState.AddModelError(" ", "Something went wrong...");
                 return View(model);
             }

@@ -44,9 +44,23 @@ namespace leave_management.Repository
             return employee;
         }
 
+        public async Task<ICollection<Employee>> GetNewUserRegistration()
+        {
+            var AllNewEmployees = await _db.Employees.Where(q => q.DateJoined <= DateTime.Now && q.DateJoined >= DateTime.Now.AddDays(-1)).ToListAsync();
+
+            return AllNewEmployees;
+        }
+
         public async Task<bool> isExists(int id)
         {
-           throw new NotImplementedException();
+            bool isExists = false;
+            var employee = await _db.Employees.FindAsync(id);
+
+            if (employee != null)
+            {
+                isExists = true;
+            }
+            return isExists;
         }
 
         public async Task<bool> Save()

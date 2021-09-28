@@ -1,5 +1,9 @@
-﻿using leave_management.Models;
+﻿using AutoMapper;
+using leave_management.Contracts;
+using leave_management.Data;
+using leave_management.Models;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using System;
@@ -14,15 +18,41 @@ namespace leave_management.Controllers
     public class HomeController : Controller
     {
         private readonly ILogger<HomeController> _logger;
+        private readonly IEmployeeRepository _employeerepo;
+        private readonly ILeaveRequestRepository _leaveRequestrepo;
+        private readonly IMapper _mapper;
+        private readonly UserManager<Employee> _userManager;
 
-        public HomeController(ILogger<HomeController> logger)
+        public HomeController
+        (
+            ILogger<HomeController> logger,
+            IMapper mapper,
+            UserManager<Employee> userManager,
+            ILeaveTypeRepository leaveTyperepo,
+            ILeaveAllocationRepository leaveAllocrepo,
+            IEmployeeRepository employeerepo,
+            ILeaveRequestRepository leaveRequestrepo
+        )
         {
             _logger = logger;
+            _employeerepo = employeerepo;
+            _leaveRequestrepo = leaveRequestrepo;
+            _mapper = mapper;
+            userManager = _userManager;
         }
 
-        public IActionResult Index()
+        public async Task<ActionResult> Index()
         {
-            return View();
+            var leaverequests = await _leaveRequestrepo.FindAll();
+            var leaverequestModel = _mapper.Map<List<LeaveRequestVM>>(leaverequests);
+            var newuserreg = await _employeerepo.GetNewUserRegistration();
+            var newuserregmodel = _mapper.Map<List<EmployeeVM>>(newuserreg);
+            var model = new AdminDashBooardViewVM
+            {
+                PendingRequests = leaverequestModel.Count(q => q.Approved == null),
+                NewUserRegistration = newuserregmodel.Count()
+            };
+            return View(model);
         }
 
         public IActionResult Privacy()

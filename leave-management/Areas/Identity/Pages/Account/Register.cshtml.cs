@@ -5,7 +5,10 @@ using System.Linq;
 using System.Text;
 using System.Text.Encodings.Web;
 using System.Threading.Tasks;
+using leave_management.Contracts;
 using leave_management.Data;
+using leave_management.Services;
+using leave_management.Utilities;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
@@ -24,17 +27,26 @@ namespace leave_management.Areas.Identity.Pages.Account
         private readonly UserManager<Employee> _userManager;
         private readonly ILogger<RegisterModel> _logger;
         private readonly IEmailSender _emailSender;
+        private readonly IEmailRepository _emailRepo;
+        private readonly ApplicationDbContext _db;
 
-        public RegisterModel(
+        public RegisterModel
+            (
             UserManager<Employee> userManager,
             SignInManager<Employee> signInManager,
             ILogger<RegisterModel> logger,
-            IEmailSender emailSender)
+            IEmailSender emailSender,
+           IEmailRepository emailRepo,
+           
+            ApplicationDbContext db
+            )
         {
             _userManager = userManager;
             _signInManager = signInManager;
             _logger = logger;
             _emailSender = emailSender;
+            _emailRepo = emailRepo;
+            _db = db;
         }
 
         [BindProperty]
@@ -86,35 +98,53 @@ namespace leave_management.Areas.Identity.Pages.Account
 
         public async Task<IActionResult> OnPostAsync(string returnUrl = null)
         {
-            returnUrl = returnUrl ?? Url.Content("~/");
-            ExternalLogins = (await _signInManager.GetExternalAuthenticationSchemesAsync()).ToList();
-            if (ModelState.IsValid)
+            try
             {
-                var user = new Employee 
-                {  
-                    UserName = Input.Email,
-                    Email = Input.Email, 
-                    FirstName = Input.FirstName, 
-                    LastName = Input.LastName,
-                    DateJoined = DateTime.Now
-                };
-                var result = await _userManager.CreateAsync(user, Input.Password);
-                if (result.Succeeded)
+                returnUrl = returnUrl ?? Url.Content("~/");
+                ExternalLogins = (await _signInManager.GetExternalAuthenticationSchemesAsync()).ToList();
+                if (ModelState.IsValid)
                 {
-                    _userManager.AddToRoleAsync(user, "Employee").Wait();
+                    var user = new Employee
+                    {
+                        UserName = Input.Email,
+                        Email = Input.Email,
+                        FirstName = Input.FirstName,
+                        LastName = Input.LastName,
+                        DateJoined = DateTime.Now,
+                        DepartmentId = 1
+                    };
+                    var result = await _userManager.CreateAsync(user, Input.Password);
+                    if (result.Succeeded)
+                    {
+                        _userManager.AddToRoleAsync(user, "Employee").Wait();
 
-                    _logger.LogInformation("User created a new account with password.");
+                        _logger.LogInformation("User created a new account with password.");
 
-                    
-                    await _signInManager.SignInAsync(user, isPersistent: false);
-                    return LocalRedirect(returnUrl);
-                  
-                }
-                foreach (var error in result.Errors)
-                {
-                    ModelState.AddModelError(string.Empty, error.Description);
+                        var subject = "Core Leave Management Registration ";
+                        var Mailsubject = "Thank you for Choosing the Core Leave Management team. Kindly Log in to begin the Onboarding Process.";
+                        EmailMessage message = new EmailMessage(Input.Email, Mailsubject, subject);
+                         _emailRepo.SendEmail(message);
+
+                        await _signInManager.SignInAsync(user, isPersistent: false);
+                        return LocalRedirect(returnUrl);
+
+                    }
+                    foreach (var error in result.Errors)
+                    {
+                        ModelState.AddModelError(string.Empty, error.Description);
+                    }
                 }
             }
+            catch (Exception ex)
+            {
+                ErrorLogger err = new ErrorLogger();
+                var logError = err.logError(ex);
+                await _db.ErrorLogs.AddAsync(logError);
+                await _db.SaveChangesAsync();
+                ModelState.AddModelError(" ", "Something went wrong...");
+
+            }
+           
 
             // If we got this far, something failed, redisplay form
             return Page();

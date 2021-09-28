@@ -88,7 +88,7 @@
                @if (( !item.Cancelled == true && item.StartDate > DateTime.Now ))
                {
                    <a asp-action="CancelRequest" class="btn btn-danger" asp-route-id="@item.ID" onclick="return confirm('Are you sure you want to cancel this request ?')">
-                       <i class="fa fa-trash" aria-hidden="true"></i>
+                       <i class="fa fa-trash fa-sm" aria-hidden="true"></i>
                    </a>
                }
             </td>
