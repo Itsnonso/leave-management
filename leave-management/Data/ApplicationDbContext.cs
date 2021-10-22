@@ -20,5 +20,6 @@ namespace leave_management.Data
         public DbSet<LeaveType> LeaveTypes { get; set; }
         public DbSet<ErrorLog> ErrorLogs { get; set; }
         public DbSet<Department> Departments { get; set; }
+        public DbSet<leave_management.Models.CreateEmployeeVM> CreateEmployeeVM { get; set; }
     }
 }

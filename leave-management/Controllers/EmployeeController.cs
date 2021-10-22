@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -63,7 +64,16 @@ namespace leave_management.Controllers
         // GET: EmployeeController/Create
         public ActionResult Create()
         {
-            return View();
+            try
+            {
+                var model =  new CreateEmployeeVM();
+
+                return View(model);
+            }
+            catch (Exception)
+            {
+                throw;
+            }
         }
 
         // POST: EmployeeController/Create
